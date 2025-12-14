@@ -2,31 +2,19 @@ import React from 'react';
 
 const FunkyBackground: React.FC = () => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#fffdf5]">
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 opacity-[0.05]" 
-           style={{ backgroundImage: 'radial-gradient(#000 2px, transparent 2px)', backgroundSize: '30px 30px' }}>
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-slate-50 dark:bg-[#0f172a] transition-colors duration-500">
+      {/* Animated Blobs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-60 dark:opacity-40">
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-400 dark:bg-brand-primary rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob"></div>
+        <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-yellow-200 dark:bg-brand-secondary rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-[-20%] left-[20%] w-[60vw] h-[60vw] bg-pink-300 dark:bg-brand-accent rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[80px] animate-blob animation-delay-4000"></div>
       </div>
 
-      {/* Big Yellow Circle */}
-      <div className="absolute -top-20 -left-20 w-64 h-64 bg-yellow-300 rounded-full border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] animate-bounce duration-[3000ms]"></div>
-
-      {/* Pink Triangle (simulated with clip-path) */}
-      <div className="absolute top-1/4 right-10 w-48 h-48 bg-pink-400 border-b-4 border-r-4 border-black transform rotate-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"></div>
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
       
-      {/* Cyan Rectangle */}
-      <div className="absolute bottom-20 left-10 w-40 h-64 bg-cyan-300 border-4 border-black transform -rotate-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-xl"></div>
-
-      {/* Purple Squiggle/Blob */}
-      <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-purple-400 border-4 border-black rounded-[40%_60%_70%_30%/40%_50%_60%_50%] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] animate-pulse"></div>
-
-      {/* Lime Pill */}
-      <div className="absolute bottom-10 right-1/4 w-56 h-20 bg-lime-300 border-4 border-black rounded-full transform rotate-45 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"></div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-10 right-1/3 text-6xl opacity-20 transform rotate-12">★</div>
-      <div className="absolute bottom-1/3 right-10 text-8xl opacity-20 transform -rotate-12">✦</div>
-      <div className="absolute top-1/3 left-10 text-6xl opacity-20 transform rotate-45">✖</div>
+      {/* Subtle Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
     </div>
   );
 };

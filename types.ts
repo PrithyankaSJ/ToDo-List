@@ -6,6 +6,7 @@ export interface Task {
   completed: boolean;
   createdAt: number;
   priority: PriorityLevel;
+  notes?: string;
 }
 
 export enum TimerMode {

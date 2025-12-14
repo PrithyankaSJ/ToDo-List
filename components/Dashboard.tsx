@@ -1,67 +1,103 @@
 import React from 'react';
-import { Trophy, CheckCircle2, Flame } from 'lucide-react';
+import { Trophy, Scroll, Flame, History, Feather, Zap, LayoutGrid, CheckCircle2 } from 'lucide-react';
 import { Task } from '../types';
 
 interface DashboardProps {
   tasks: Task[];
   pomodoros: number;
+  onHistoryClick: () => void;
+  onNotesClick: () => void;
+  onRoutinesClick: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ tasks, pomodoros }) => {
+interface CardProps {
+  children: React.ReactNode;
+  onClick: () => void;
+  className?: string;
+  icon?: React.ReactNode;
+  title: string;
+}
+
+const Card: React.FC<CardProps> = ({ children, onClick, className = '', icon, title }) => (
+  <button 
+    onClick={onClick}
+    className={`relative p-6 rounded-3xl text-left w-full group transition-all duration-300 hover:-translate-y-1
+      bg-white/60 dark:bg-brand-darkless/60 backdrop-blur-xl border border-white/50 dark:border-white/5 
+      shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]
+      hover:shadow-[0_8px_30px_rgb(139,92,246,0.15)] dark:hover:shadow-[0_8px_30px_rgb(139,92,246,0.15)]
+      ${className}`}
+  >
+    <div className="flex items-center gap-3 mb-3 text-slate-500 dark:text-slate-400 group-hover:text-brand-primary transition-colors">
+        {icon}
+        <span className="font-display font-semibold text-xs uppercase tracking-wider">{title}</span>
+    </div>
+    {children}
+  </button>
+);
+
+const Dashboard: React.FC<DashboardProps> = ({ tasks, pomodoros, onHistoryClick, onNotesClick, onRoutinesClick }) => {
   const completedTasks = tasks.filter(t => t.completed).length;
   const totalTasks = tasks.length;
   const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
   const getMotivationalMessage = () => {
-    if (progress === 100 && totalTasks > 0) return "GOD MODE ACTIVATED! ⚡";
-    if (progress >= 75) return "ABSOLUTELY CRUSHING IT! 🔥";
-    if (progress >= 50) return "HALFWAY TO GLORY! 🚀";
-    if (progress >= 25) return "MOMENTUM IS BUILDING... 🚂";
-    return "LET'S GET THIS BREAD! 🥖";
+    if (progress === 100 && totalTasks > 0) return "All done! Amazing.";
+    if (progress >= 75) return "Almost there!";
+    if (progress >= 50) return "Halfway through.";
+    if (progress >= 25) return "Great start.";
+    return "Ready to focus?";
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto mb-8 px-4">
-      <div className="bg-white border-4 border-black rounded-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-300 rounded-bl-full border-l-4 border-b-4 border-black -mr-[4px] -mt-[4px] z-0"></div>
+    <div className="w-full max-w-5xl mx-auto mb-10 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6">
-          
-          {/* Stat 1: Task Progress */}
-          <div className="bg-cyan-200 border-2 border-black rounded-2xl p-4 flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
-            <div className="bg-white border-2 border-black p-3 rounded-xl">
-              <CheckCircle2 size={32} className="text-black" />
+        {/* Stat 1: History */}
+        <Card 
+            onClick={onHistoryClick} 
+            title="History"
+            icon={<History size={18} />}
+        >
+          <div>
+            <div className="flex items-baseline gap-2">
+              <p className="text-4xl font-display font-bold text-slate-800 dark:text-white">{completedTasks}</p>
+              <span className="text-sm font-medium text-slate-400">/ {totalTasks} Tasks</span>
             </div>
-            <div>
-              <p className="font-bold text-sm uppercase tracking-wider">Missions Done</p>
-              <p className="text-4xl font-black funky-font">{completedTasks}<span className="text-xl text-black/50">/{totalTasks}</span></p>
-            </div>
-          </div>
-
-          {/* Stat 2: Pomodoros */}
-          <div className="bg-pink-300 border-2 border-black rounded-2xl p-4 flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
-             <div className="bg-white border-2 border-black p-3 rounded-xl">
-              <Flame size={32} className="text-black" />
-            </div>
-            <div>
-              <p className="font-bold text-sm uppercase tracking-wider">Focus Rounds</p>
-              <p className="text-4xl font-black funky-font">{pomodoros}</p>
+            <div className="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                <div className="h-full bg-brand-primary rounded-full transition-all duration-1000" style={{ width: `${progress}%` }}></div>
             </div>
           </div>
+        </Card>
 
-          {/* Stat 3: Vibe Check */}
-          <div className="bg-lime-300 border-2 border-black rounded-2xl p-4 flex items-center gap-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-transform">
-             <div className="bg-white border-2 border-black p-3 rounded-xl">
-              <Trophy size={32} className="text-black" />
-            </div>
+        {/* Stat 2: Routines */}
+        <Card 
+            onClick={onRoutinesClick} 
+            title="Sessions"
+            icon={<Zap size={18} />}
+        >
+          <div className="flex justify-between items-end">
             <div>
-              <p className="font-bold text-sm uppercase tracking-wider">Vibe Check</p>
-              <p className="text-lg font-bold leading-tight">{getMotivationalMessage()}</p>
+                 <p className="text-4xl font-display font-bold text-slate-800 dark:text-white">{pomodoros}</p>
+                 <p className="text-xs text-slate-400 mt-1">Focus cycles completed</p>
+            </div>
+            <div className="bg-brand-secondary/10 p-2 rounded-xl text-brand-secondary mb-1">
+                <Flame size={20} />
             </div>
           </div>
+        </Card>
 
-        </div>
+        {/* Stat 3: Notes */}
+        <Card 
+            onClick={onNotesClick} 
+            title="Notes & Status"
+            icon={<Scroll size={18} />}
+        >
+          <div>
+            <p className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-1">{getMotivationalMessage()}</p>
+            <p className="text-xs text-slate-400">Click to open scratchpad</p>
+          </div>
+        </Card>
+
       </div>
     </div>
   );
